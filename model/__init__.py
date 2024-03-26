@@ -1,4 +1,4 @@
 from .base import Base
-from .patient import Patient
-from .admission import Admission
-from .icustay import ICUStay
+from .patients import Patient
+from .admissions import Admission
+from .icustays import ICUStay
