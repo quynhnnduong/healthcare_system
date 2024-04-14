@@ -1,9 +1,23 @@
-from model import Base
-from model.db import engine
+from fastapi import FastAPI
+import uvicorn
+
+from model.db import SessionLocal
+
+app = FastAPI()
 
 
-def create_tables():
-    Base.metadata.create_all(bind=engine)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
 
 if __name__ == "__main__":
-    create_tables()
+    uvicorn.run(app, host="0.0.0.0", port=8000)

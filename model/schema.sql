@@ -52,6 +52,32 @@ CREATE TABLE IF NOT EXISTS icustays (
     FOREIGN KEY (HADM_ID) REFERENCES admissions(HADM_ID)
 );
 
+CREATE TABLE users (
+    user_id INT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,  -- Store hashed passwords, not plain text
+    role_id INT,
+    FOREIGN KEY (role_id) REFERENCES roles(role_id)
+);
 
+CREATE TABLE roles (
+    role_id INT PRIMARY KEY,
+    role_name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE permissions (
+    permission_id INT PRIMARY KEY,
+    permission_name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE role_permissions (
+    role_id INT,
+    permission_id INT,
+    PRIMARY KEY (role_id, permission_id),
+    FOREIGN KEY (role_id) REFERENCES roles(role_id),
+    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)
+);
 
 
