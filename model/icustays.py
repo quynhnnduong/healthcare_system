@@ -6,19 +6,17 @@ from model import Base
 
 class ICUStay(Base):
     __tablename__ = 'icustays'
-
-    ROW_ID = Column(Integer, primary_key=True)
-    SUBJECT_ID = Column(Integer, ForeignKey('patients.SUBJECT_ID'))
-    HADM_ID = Column(Integer, ForeignKey('admissions.HADM_ID'))
-    ICUSTAY_ID = Column(Integer, unique=True, nullable=False)
-    DBSOURCE = Column(String(20))
-    FIRST_CAREUNIT = Column(String(20))
-    LAST_CAREUNIT = Column(String(20))
-    FIRST_WARDID = Column(Integer)
-    LAST_WARDID = Column(Integer)
-    INTIME = Column(TIMESTAMP)
-    OUTTIME = Column(TIMESTAMP)
-    LOS = Column(Float)
+    icustay_id = Column(Integer, primary_key=True)
+    subject_id = Column(Integer, ForeignKey('patients.subject_id'))
+    hadm_id = Column(Integer, ForeignKey('admissions.hadm_id'))
+    dbsource = Column(String(20))
+    first_careunit = Column(String(20))
+    last_careunit = Column(String(20))
+    first_wardid = Column(Integer)
+    last_wardid = Column(Integer)
+    intime = Column(TIMESTAMP)
+    outtime = Column(TIMESTAMP)
+    los = Column(Float)
 
     patient = relationship("Patient", back_populates="icustays")
     admission = relationship("Admission", back_populates="icustays")
