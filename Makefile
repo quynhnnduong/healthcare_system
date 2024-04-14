@@ -2,8 +2,8 @@
 
 .PHONY: setup run check-python-version clean
 
-VENV := .venv
-PYTHON := $(VENV)/bin/python
+VENV := venv
+PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
 
 check-python-version:
