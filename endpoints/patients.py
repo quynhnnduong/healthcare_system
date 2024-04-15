@@ -77,5 +77,5 @@ def update_patient(subject_id: int, patient_data: PatientInfo,
     if patient_data.expire_flag:
         patient.expire_flag = patient_data.expire_flag
 
-    db.commit()  # Commit the transaction
+    db.commit()
     return {"message": "Patient updated successfully", "patient": patient}

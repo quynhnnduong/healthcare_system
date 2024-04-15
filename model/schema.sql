@@ -81,7 +81,7 @@ CREATE TABLE role_permissions (
 
 -- roles
 INSERT INTO roles (role_id, role_name, description) VALUES
-(1, 'Administrator', 'Can access and manage all records and settings.'),
+(1, 'Administrator', 'Can access and manage all records.'),
 (2, 'Doctor', 'Can view and edit patient records they are assigned to.'),
 (3, 'Nurse', 'Can view patient records and update certain health metrics.'),
 (4, 'Patient', 'Can access patient contact information and manage appointments.');
