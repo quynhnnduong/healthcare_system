@@ -79,22 +79,14 @@ CREATE TABLE role_permissions (
     FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)
 );
 
-CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(255) UNIQUE NOT NULL,
-    hashed_password VARCHAR(255) NOT NULL,
-    role_id INT,
-    FOREIGN KEY (role_id) REFERENCES roles(role_id)
-);
-
--- Sample roles
+-- roles
 INSERT INTO roles (role_id, role_name, description) VALUES
 (1, 'Administrator', 'Can access and manage all records and settings.'),
 (2, 'Doctor', 'Can view and edit patient records they are assigned to.'),
 (3, 'Nurse', 'Can view patient records and update certain health metrics.'),
 (4, 'Patient', 'Can access patient contact information and manage appointments.');
 
--- Sample permissions
+-- permissions
 INSERT INTO permissions (permission_id, permission_name, description) VALUES
 (1, 'view_patient', 'View patient details.'),
 (2, 'edit_patient', 'Edit patient details.'),
