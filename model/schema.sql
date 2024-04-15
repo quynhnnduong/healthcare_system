@@ -91,11 +91,10 @@ INSERT INTO permissions (permission_id, permission_name, description) VALUES
 (1, 'view_patient', 'View patient details.'),
 (2, 'edit_patient', 'Edit patient details.'),
 (3, 'view_all_patients', 'View all patient records.'),
-(4, 'manage_settings', 'Access and modify system settings.');
 
 -- Link roles to permissions
 INSERT INTO role_permissions (role_id, permission_id) VALUES
-(1, 3), (1, 4), -- Administrator
+(1, 3),         -- Administrator
 (2, 1), (2, 2), -- Doctor
 (3, 1),         -- Nurse
 (4, 1);         -- Patient

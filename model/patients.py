@@ -13,3 +13,5 @@ class Patient(Base):
     dod_hosp = Column(TIMESTAMP)
     dod_ssn = Column(TIMESTAMP)
     expire_flag = Column(String(5))
+    admissions = relationship("Admission", back_populates="patient")
+

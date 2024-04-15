@@ -18,5 +18,5 @@ class ICUStay(Base):
     outtime = Column(TIMESTAMP)
     los = Column(Float)
 
-    patient = relationship("Patient", back_populates="icustays")
+    # patient = relationship("Patient", back_populates="icustays")
     admission = relationship("Admission", back_populates="icustays")
