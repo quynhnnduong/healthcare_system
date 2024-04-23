@@ -1,56 +1,57 @@
 -- Create patients table
-CREATE TABLE IF NOT EXISTS patients (
-    ROW_ID INT PRIMARY KEY,
-    SUBJECT_ID INT UNIQUE NOT NULL,
-    GENDER VARCHAR(5),
-    DOB VARCHAR,
-    DOD VARCHAR,
-    DOD_HOSP VARCHAR,
-    DOD_SSN VARCHAR,
-    EXPIRE_FLAG VARCHAR(5)
+CREATE TABLE patients (
+    row_id INT PRIMARY KEY,
+    subject_id INT UNIQUE NOT NULL,
+    gender VARCHAR(5),
+    dob VARCHAR,
+    dod VARCHAR,
+    dod_hosp VARCHAR,
+    dod_ssn VARCHAR,
+    expire_flag VARCHAR(5)
 );
 
 -- Create admissions table
-CREATE TABLE IF NOT EXISTS admissions (
-    ROW_ID INT PRIMARY KEY,
-    SUBJECT_ID INT NOT NULL,
-    HADM_ID INT UNIQUE NOT NULL,
-    ADMITTIME TIMESTAMP(0),
-    DISCHTIME TIMESTAMP(0),
-    DEATHTIME TIMESTAMP(0),
-    ADMISSION_TYPE VARCHAR(50),
-    ADMISSION_LOCATION VARCHAR(50),
-    DISCHARGE_LOCATION VARCHAR(50),
-    INSURANCE VARCHAR(255),
-    LANGUAGE VARCHAR(10),
-    RELIGION VARCHAR(50),
-    MARITAL_STATUS VARCHAR(50),
-    ETHNICITY VARCHAR(200),
-    EDREGTIME TIMESTAMP(0),
-    EDOUTTIME TIMESTAMP(0),
-    DIAGNOSIS VARCHAR(300),
-    HOSPITAL_EXPIRE_FLAG SMALLINT,
-    HAS_CHARTEVENTS_DATA SMALLINT,
-    FOREIGN KEY (SUBJECT_ID) REFERENCES patients(SUBJECT_ID)
+CREATE TABLE admissions (
+    row_id INT PRIMARY KEY,
+    subject_id INT NOT NULL,
+    hadm_id INT UNIQUE NOT NULL,
+    admittime TIMESTAMP,
+    dischtime TIMESTAMP,
+    deathtime TIMESTAMP,
+    admission_type VARCHAR(50),
+    admission_location VARCHAR(50),
+    discharge_location VARCHAR(50),
+    insurance VARCHAR(255),
+    language VARCHAR(10),
+    religion VARCHAR(50),
+    marital_status VARCHAR(50),
+    ethnicity VARCHAR(200),
+    edregtime TIMESTAMP,
+    edouttime TIMESTAMP,
+    diagnosis VARCHAR(300),
+    hospital_expire_flag SMALLINT,
+    has_chartevents_data SMALLINT,
+    FOREIGN KEY (subject_id) REFERENCES patients(subject_id)
 );
 
 -- Create icustays table
-CREATE TABLE IF NOT EXISTS icustays (
-    ROW_ID INT PRIMARY KEY,
-    SUBJECT_ID INT NOT NULL,
-    HADM_ID INT NOT NULL,
-    ICUSTAY_ID INT UNIQUE NOT NULL,
-    DBSOURCE VARCHAR(20),
-    FIRST_CAREUNIT VARCHAR(20),
-    LAST_CAREUNIT VARCHAR(20),
-    FIRST_WARDID SMALLINT,
-    LAST_WARDID SMALLINT,
-    INTIME TIMESTAMP(0),
-    OUTTIME TIMESTAMP(0),
-    LOS DOUBLE PRECISION,
-    FOREIGN KEY (SUBJECT_ID) REFERENCES patients(SUBJECT_ID),
-    FOREIGN KEY (HADM_ID) REFERENCES admissions(HADM_ID)
+CREATE TABLE icustays (
+    row_id INT PRIMARY KEY,
+    subject_id INT NOT NULL,
+    hadm_id INT NOT NULL,
+    icustay_id INT UNIQUE NOT NULL,
+    dbsource VARCHAR(20),
+    first_careunit VARCHAR(20),
+    last_careunit VARCHAR(20),
+    first_wardid SMALLINT,
+    last_wardid SMALLINT,
+    intime TIMESTAMP,
+    outtime TIMESTAMP,
+    los DOUBLE PRECISION,
+    FOREIGN KEY (subject_id) REFERENCES patients(subject_id),
+    FOREIGN KEY (hadm_id) REFERENCES admissions(hadm_id)
 );
+
 
 CREATE TABLE roles (
     role_id SERIAL PRIMARY KEY,
@@ -71,7 +72,7 @@ INSERT INTO roles (role_id, role_name, description) VALUES
 (1, 'Administrator', 'Can access and manage all records.'),
 (2, 'Doctor', 'Can view and edit patient records they are assigned to.'),
 (3, 'Nurse', 'Can view patient records and update certain health metrics.'),
-(4, 'Patient', 'Can access patient contact information and manage appointments.');
+(4, 'Patient', 'Can access patient information.');
 
 
 

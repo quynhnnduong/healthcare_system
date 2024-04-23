@@ -1,81 +1,76 @@
-# from typing import List
-#
-# from fastapi import Depends, HTTPException, Security, FastAPI
-# from fastapi.security import OAuth2PasswordBearer
-# from sqlalchemy.orm import Session
-#
-# from model import User, Role, role_permissions, Permission, Patient
-# from model.db import get_db
-# from schema.patient import PatientInfo
-#
-# app = FastAPI()
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-#
-#
-# def get_current_user_permissions(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> list:
-#     user = db.query(User).filter(User.username == token).first()
-#     if not user:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     permissions = [perm.permission_name for perm in user.role.permissions]
-#     return permissions
-#
-#
-# def has_permission(permission: str):
-#     def permission_checker(permissions: list = Depends(get_current_user_permissions)):
-#         if permission not in permissions:
-#             raise HTTPException(status_code=403, detail="Permission denied")
-#
-#     return permission_checker
-#
-#
-# @app.get("/patients/", response_model=List[PatientInfo])
-# def view_all_patients(permissions: List[str] = Depends(get_current_user_permissions), db: Session = Depends(get_db)):
-#     if 'view_all_patients' not in permissions:
-#         raise HTTPException(status_code=403, detail="Permission denied")
-#
-#     patients = db.query(Patient).all()
-#     return patients
-#
-#
-# @app.get("/patients/{subject_id}")
-# def read_patient(subject_id: int, permissions: list = Depends(get_current_user_permissions),
-#                  db: Session = Depends(get_db)):
-#     if 'view_patient' not in permissions:
-#         raise HTTPException(status_code=403, detail="Permission denied")
-#
-#     patient = db.query(Patient).filter(Patient.subject_id == subject_id).first()
-#     if patient is None:
-#         raise HTTPException(status_code=404, detail="Patient not found")
-#
-#     # if 'Doctor' in permissions: return full patient record
-#     # if 'Patient' in permissions: return limited fields
-#     return patient
-#
-#
-# @app.put("/patients/{subject_id}")
-# def update_patient(subject_id: int, patient_data: PatientInfo,
-#                    permissions: list = Depends(get_current_user_permissions), db: Session = Depends(get_db)):
-#     if 'edit_patient' not in permissions:
-#         raise HTTPException(status_code=403, detail="Permission denied")
-#
-#     # Retrieve the existing patient record
-#     patient = db.query(Patient).filter(Patient.subject_id == subject_id).first()
-#     if not patient:
-#         raise HTTPException(status_code=404, detail="Patient not found")
-#
-#     # Update fields if provided
-#     if patient_data.gender:
-#         patient.gender = patient_data.gender
-#     if patient_data.dob:
-#         patient.dob = patient_data.dob
-#     if patient_data.dod:
-#         patient.dod = patient_data.dod
-#     if patient_data.dod_hosp:
-#         patient.dod_hosp = patient_data.dod_hosp
-#     if patient_data.dod_ssn:
-#         patient.dod_ssn = patient_data.dod_ssn
-#     if patient_data.expire_flag:
-#         patient.expire_flag = patient_data.expire_flag
-#
-#     db.commit()
-#     return {"message": "Patient updated successfully", "patient": patient}
+import base64
+import os
+from typing import List
+
+from fastapi import Depends, HTTPException, Security, FastAPI, APIRouter
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session, joinedload
+
+from encryption.AESCipher import AESCipher
+from endpoints.login import AdmissionInfo, ICUStayInfo, PatientInfo
+from model import User, Role, Patient, Admission
+from model.db import get_db
+
+router = APIRouter(prefix="/patient", tags=["patient"])
+
+# Load and initialize AES cipher
+encoded_key = os.getenv("ENCRYPTION_KEY")
+if not encoded_key:
+    raise RuntimeError("ENCRYPTION_KEY is not set in the environment variables")
+key = base64.b64decode(encoded_key)
+aes_cipher = AESCipher(key)
+
+
+@router.get("/{subject_id}", response_model=PatientInfo)
+def get_patient(subject_id: int, db: Session = Depends(get_db)):
+    patient = db.query(Patient).options(joinedload(Patient.admissions).joinedload(Admission.icustays)).filter_by(
+        subject_id=subject_id).first()
+
+    if patient is None:
+        raise HTTPException(status_code=404, detail="Patient not found")
+
+    return PatientInfo(
+        subject_id=patient.subject_id,
+        gender=patient.gender,
+        dob=patient.dob,
+        dod=patient.dod,
+        dod_hosp=patient.dod_hosp,
+        dod_ssn=patient.dod_ssn,
+        expire_flag=patient.expire_flag,
+        admissions=[
+            AdmissionInfo(
+                hadm_id=admission.hadm_id,
+                admittime=admission.admittime.isoformat() if admission.admittime else None,
+                dischtime=admission.dischtime.isoformat() if admission.dischtime else None,
+                deathtime=admission.deathtime.isoformat() if admission.deathtime else None,
+                admission_type=admission.admission_type,
+                admission_location=admission.admission_location,
+                discharge_location=admission.discharge_location,
+                insurance=admission.insurance,
+                language=admission.language,
+                religion=admission.religion,
+                marital_status=admission.marital_status,
+                ethnicity=admission.ethnicity,
+                edregtime=admission.edregtime.isoformat() if admission.edregtime else None,
+                edouttime=admission.edouttime.isoformat() if admission.edouttime else None,
+                diagnosis=admission.diagnosis,
+                hospital_expire_flag=admission.hospital_expire_flag,
+                has_chartevents_data=admission.has_chartevents_data,
+                icustays=[
+                    ICUStayInfo(
+                        icustay_id=icustay.icustay_id,
+                        dbsource=icustay.dbsource,
+                        first_careunit=icustay.first_careunit,
+                        last_careunit=icustay.last_careunit,
+                        first_wardid=icustay.first_wardid,
+                        last_wardid=icustay.last_wardid,
+                        intime=icustay.intime.isoformat() if icustay.intime else None,
+                        outtime=icustay.outtime.isoformat() if icustay.outtime else None,
+                        los=icustay.los
+                    )
+                    for icustay in admission.icustays
+                ]
+            )
+            for admission in patient.admissions
+        ]
+    )

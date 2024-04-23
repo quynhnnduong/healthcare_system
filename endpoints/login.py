@@ -62,61 +62,16 @@ class PatientInfo(BaseModel):
     admissions: List[AdmissionInfo] = []
 
 
-@router.post("/patient", response_model=PatientInfo)
+@router.post("/patient")
 def patient_login(subject_id: int, dod_ssn: str, db: Session = Depends(get_db)):
-    patient = db.query(Patient).options(joinedload(Patient.admissions).joinedload(Admission.icustays)).filter_by(
-        subject_id=subject_id).first()
+    patient = db.query(Patient).filter_by(subject_id=subject_id).first()
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
 
     if patient.dod_ssn != dod_ssn:
         raise HTTPException(status_code=401, detail="Unauthorized access: SSN mismatch")
 
-    return PatientInfo(
-        subject_id=patient.subject_id,
-        gender=patient.gender,
-        dob=patient.dob,
-        dod=patient.dod,
-        dod_hosp=patient.dod_hosp,
-        dod_ssn=patient.dod_ssn,
-        expire_flag=patient.expire_flag,
-        admissions=[
-            AdmissionInfo(
-                hadm_id=admission.hadm_id,
-                admittime=admission.admittime.isoformat() if admission.admittime else None,
-                dischtime=admission.dischtime.isoformat() if admission.dischtime else None,
-                deathtime=admission.deathtime.isoformat() if admission.deathtime else None,
-                admission_type=admission.admission_type,
-                admission_location=admission.admission_location,
-                discharge_location=admission.discharge_location,
-                insurance=admission.insurance,
-                language=admission.language,
-                religion=admission.religion,
-                marital_status=admission.marital_status,
-                ethnicity=admission.ethnicity,
-                edregtime=admission.edregtime.isoformat() if admission.edregtime else None,
-                edouttime=admission.edouttime.isoformat() if admission.edouttime else None,
-                diagnosis=admission.diagnosis,
-                hospital_expire_flag=admission.hospital_expire_flag,
-                has_chartevents_data=admission.has_chartevents_data,
-                icustays=[
-                    ICUStayInfo(
-                        icustay_id=icustay.icustay_id,
-                        dbsource=icustay.dbsource,
-                        first_careunit=icustay.first_careunit,
-                        last_careunit=icustay.last_careunit,
-                        first_wardid=icustay.first_wardid,
-                        last_wardid=icustay.last_wardid,
-                        intime=icustay.intime.isoformat() if icustay.intime else None,
-                        outtime=icustay.outtime.isoformat() if icustay.outtime else None,
-                        los=icustay.los
-                    )
-                    for icustay in admission.icustays
-                ]
-            )
-            for admission in patient.admissions
-        ]
-    )
+    return {"subject_id": subject_id}
 
 
 def authenticate_user(db: Session, username: str, password: str):

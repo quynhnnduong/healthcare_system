@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 import uvicorn
 
-from endpoints import encrypt_data, patients, user, login
+from endpoints import insert_data, patients, user, login
 
 app = FastAPI()
-app.include_router(encrypt_data.router)
+app.include_router(insert_data.router)
 app.include_router(user.router)
 app.include_router(login.router)
+app.include_router(patients.router)
 
 
 @app.get("/")
