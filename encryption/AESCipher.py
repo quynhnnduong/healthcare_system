@@ -1,4 +1,4 @@
-from Crypto.Cipher import AES as CryptoAES
+from Crypto.Cipher import AES as CryptoAES, AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import base64
@@ -13,7 +13,7 @@ class AESCipher:
         """
         self.key = key
 
-    def encrypt_message(self, message):
+    def encrypt(self, message):
         """
         Encrypts a message using AES encryption with CBC mode.
         Args:
@@ -22,6 +22,9 @@ class AESCipher:
         Returns:
         str: The encrypted message encoded in base64.
         """
+        if message is None:
+            return None
+
         iv = get_random_bytes(CryptoAES.block_size)  # Generate a random IV
 
         cipher = CryptoAES.new(self.key, CryptoAES.MODE_CBC, iv)  # Create cipher object
@@ -32,7 +35,7 @@ class AESCipher:
 
         return encrypted_message_b64
 
-    def decrypt_message(self, encrypted_message):
+    def decrypt(self, encrypted_message):
         """
         Decrypts a message using AES encryption with CBC mode.
         Args:
@@ -41,6 +44,9 @@ class AESCipher:
         Returns:
         str: The decrypted plain text message.
         """
+        if encrypted_message is None:
+            return None
+
         encrypted_message_iv = base64.b64decode(encrypted_message)  # Decode the base64 encoded message
 
         iv = encrypted_message_iv[:CryptoAES.block_size]  # Extract the IV
@@ -52,14 +58,27 @@ class AESCipher:
 
         return decrypted_message
 
+# def generate_key(key_size=16):
+#     assert key_size in [16, 24, 32], "Key size must be either 16, 24, or 32 bytes"
+#     return get_random_bytes(key_size)
+
+
 # Example usage
-# if __name__ == "__main__":
-#     key = get_random_bytes(16)  # AES key must be either 16, 24, or 32 bytes long
-#     aes_cipher = AESCipher(key)
-#     message = "Hello, world! This is a test message."
-
-#     encrypted = aes_cipher.encrypt_message(message)
-#     print("Encrypted:", encrypted)
-
-#     decrypted = aes_cipher.decrypt_message(encrypted)
-#     print("Decrypted:", decrypted)
+if __name__ == "__main__":
+    iv = get_random_bytes(AES.block_size)
+    iv_hex = iv.hex()
+#     key = generate_key()
+#
+#     # Convert the key to a base64 string for easier viewing and printing
+#     key_base64 = base64.b64encode(key).decode('utf-8')
+#
+#     # Print the base64-encoded key
+#     print("Base64 Encoded Key:", key_base64)
+    # aes_cipher = AESCipher(key)
+    # message = "Hello, world! This is a test message."
+    #
+    # encrypted = aes_cipher.encrypt_message(message)
+    # print("Encrypted:", encrypted)
+    #
+    # decrypted = aes_cipher.decrypt_message(encrypted)
+    # print("Decrypted:", decrypted)

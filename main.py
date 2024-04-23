@@ -1,17 +1,13 @@
 from fastapi import FastAPI
 import uvicorn
 
-from model.db import SessionLocal
+from endpoints import encrypt_data, patients, user, login
 
 app = FastAPI()
+app.include_router(encrypt_data.router)
+app.include_router(user.router)
+app.include_router(login.router)
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @app.get("/")
 def read_root():
