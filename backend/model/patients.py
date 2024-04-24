@@ -1,6 +1,6 @@
 import base64
 
-from sqlalchemy import Column, Integer, String, TIMESTAMP
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from encryption.AESCipher import AESCipher

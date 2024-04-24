@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 import uvicorn
 
-from endpoints import insert_data, patients, user, login
+# from endpoints import insert_data, user, login
+# from endpoints import patients
+from endpoints import insert_data, user, login, patients
 
 app = FastAPI()
 app.include_router(insert_data.router)

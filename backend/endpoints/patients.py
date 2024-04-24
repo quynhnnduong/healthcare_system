@@ -2,17 +2,15 @@ import base64
 import os
 from typing import List, Optional
 
-from fastapi import Depends, HTTPException, Security, FastAPI, APIRouter
-from fastapi.security import OAuth2PasswordBearer
-from pydantic import Field, BaseModel
+from fastapi import Depends, HTTPException, APIRouter
+from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, joinedload
-from typing_extensions import Sequence
 from sqlalchemy import func
 
 from encryption.AESCipher import AESCipher
-from endpoints.login import AdmissionInfo, ICUStayInfo, PatientInfo
-from model import User, Role, Patient, Admission, ICUStay
+from endpoints.login import PatientInfo, AdmissionInfo, ICUStayInfo
+from model import Patient, Admission, ICUStay
 from model.db import get_db
 
 router = APIRouter(prefix="/patient", tags=["patient"])

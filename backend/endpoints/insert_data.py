@@ -1,10 +1,9 @@
 import csv
-from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.orm import Session
 
-from model import Admission
+from model import Patient, Admission
 from model.db import get_db
-from model.patients import Patient  # Ensure your patient model import is correct
 
 router = APIRouter(prefix="/data-import", tags=["data-import"])
 

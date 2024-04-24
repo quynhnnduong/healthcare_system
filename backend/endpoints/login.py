@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
 from pydantic import BaseModel
 import bcrypt
-from model import User, Patient, Admission, ICUStay
+from model import User, Patient, Admission
 from model.db import get_db
 from encryption.AESCipher import AESCipher
 import os, base64
