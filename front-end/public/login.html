@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h2 id="roleLabel">Login as </h2>
+    
+    <!-- Doctor/Nurse -->
+    <div id="doctorNurseForm" style="display: none;">
+        <label for="username">Username:</label>
+        <input id="username" name="input1" type="text" required autofocus />
+        <label for="password">Password:</label>
+        <input id="password" name="input2" type="password" required />
+        <button id="doctorNurseLoginButton" class="btn btn-success btn-block" disabled>Login</button>
+    </div>
+
+    <!-- Patient -->
+    <div id="patientForm" style="display: none;">
+        <label for="subjectId">Subject ID:</label>
+        <input id="subjectId" name="input3" type="number" required autofocus>
+        <label for="ssn">SSN (Social Security Number):</label>
+        <input id="ssn" name="input4" type="text" required>
+        <button id="patientLoginButton" class="btn btn-success btn-block" disabled>Login</button>
+    </div>
+</div>
+
+<script src="appService.js"></script>
+<script src="login.js" type="module"></script>
+</body>
+</html>

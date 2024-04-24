@@ -43,5 +43,49 @@ This will start application at `localhost:8000`
   
 
 
+# Healthcare Database System Frontend
 
+##  Overview
 
+This project is the frontend component of the Healthcare Database System. It provides a user-friendly interface for patients, doctors, and nurses to interact with the system, view patient information, and perform various tasks securely.
+
+## Setup Instructions
+
+1. Clone this repository to your local machine:
+   git clone <repository-url>
+
+2. Navigate to the project directory:
+   cd healthcare_system/front-end
+
+3. Install the required dependencies:
+   npm install
+
+## Usage
+
+To run the frontend server locally, use the following command:
+npx webpack serve --open
+
+This command will start the webpack dev server and automatically open the default web browser with the frontend application.
+
+## Configuration
+
+- Webpack Configuration: The webpack configuration is located in the webpack.config.js file. It is responsible for bundling the JavaScript code and assets.
+
+- HTML Templates: HTML templates are located in the public directory. The main.html file serves as the main entry point for the application.
+
+- JavaScript Code: JavaScript code is located in the public directory. The main.js file is located in the src directory and contains the main entry point for the application.
+
+## Dependencies
+
+- Node.js
+- npm
+- webpack
+- webpack-cli
+- webpack-dev-server
+- html-webpack-plugin
+
+For detailed information on dependencies, refer to the package.json file.
+
+License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

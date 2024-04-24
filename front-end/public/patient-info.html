@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Information</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Ensure your CSS file path is correct -->
+</head>
+<body>
+<div class="container">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#informationTab" onclick="showTab('information')">Information</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#admissionsTab" onclick="showTab('admissions')">Admissions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#icuStaysTab" onclick="showTab('icuStays')">ICU Stays</a>
+      </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content">
+      <!-- Information Tab -->
+      <div id="informationTab" class="tab-pane fade show active">
+        <h3>Information</h3>
+        <!-- Fields will be filled by JavaScript -->
+      </div>
+  
+      <!-- Admissions Tab -->
+      <div id="admissionsTab" class="tab-pane fade">
+        <h3>Admissions</h3>
+        <!-- Admissions details will be filled by JavaScript -->
+      </div>
+
+      <!-- ICU Stays Tab -->
+      <div id="icuStaysTab" class="tab-pane fade">
+        <h3>ICU Stays</h3>
+        <!-- ICU Stay details will be filled by JavaScript -->
+      </div>
+    </div>
+  
+    <!-- Update and Go Back Buttons -->
+    <button id="updateButton" class="btn btn-primary btn-block mt-3" onclick="updateInfo()">Update</button>
+    <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+        Patient Data Successfully Updated
+        <button type="button" class="close" aria-label="Close" onclick="hideSuccessMessage()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="text-center mt-3">
+      <button class="btn btn-secondary" onclick="goBack()">Go Back</button>
+    </div>
+</div>
+<script src="appService.js"></script>
+<script type="module" src="patient-info.js"></script>
+</body>
+</html>
