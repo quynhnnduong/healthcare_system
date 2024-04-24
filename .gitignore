@@ -1,6 +1,0 @@
-../.idea/
-__pycache__/
-*.py[cod]
-../.venv/
-backend/venv/
-.env

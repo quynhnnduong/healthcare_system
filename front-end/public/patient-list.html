@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Patient List</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css"> <!-- Make sure to have your CSS path correct -->
+    </head>
+
+    <body>
+        <div id="logoutContainer" class="logout-container">
+            <button id="logoutButton" class="btn btn-danger logout-button">Logout</button>
+        </div>
+        <div id="patientListContainer">
+            <h2>List of Patients</h2>
+            <ul id="patientList">
+                <!-- Patient IDs will be dynamically loaded here -->
+            </ul>
+            <p id="noPatients" style="display: none;">No patients available.</p>
+        </div>
+        <script type="module" src="patient-list.js"></script>
+    </body>
+</html>
