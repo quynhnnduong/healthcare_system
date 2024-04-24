@@ -1,7 +1,7 @@
 -- Create patients table
 CREATE TABLE patients (
-    row_id INT PRIMARY KEY,
-    subject_id INT UNIQUE NOT NULL,
+    row_id SERIAL PRIMARY KEY,
+    subject_id SERIAL UNIQUE NOT NULL,
     gender VARCHAR(5),
     dob VARCHAR,
     dod VARCHAR,
@@ -12,9 +12,9 @@ CREATE TABLE patients (
 
 -- Create admissions table
 CREATE TABLE admissions (
-    row_id INT PRIMARY KEY,
+    row_id SERIAL PRIMARY KEY,
     subject_id INT NOT NULL,
-    hadm_id INT UNIQUE NOT NULL,
+    hadm_id SERIAL UNIQUE NOT NULL,
     admittime TIMESTAMP,
     dischtime TIMESTAMP,
     deathtime TIMESTAMP,
@@ -36,10 +36,10 @@ CREATE TABLE admissions (
 
 -- Create icustays table
 CREATE TABLE icustays (
-    row_id INT PRIMARY KEY,
+    row_id SERIAL PRIMARY KEY,
     subject_id INT NOT NULL,
     hadm_id INT NOT NULL,
-    icustay_id INT UNIQUE NOT NULL,
+    icustay_id SERIAL UNIQUE NOT NULL,
     dbsource VARCHAR(20),
     first_careunit VARCHAR(20),
     last_careunit VARCHAR(20),

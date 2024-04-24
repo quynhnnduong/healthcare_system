@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, TIMESTAMP, Float
+from sqlalchemy import Column, Integer, ForeignKey, String, TIMESTAMP, Float, Sequence
 from sqlalchemy.orm import relationship
 
 from model import Base
@@ -6,7 +6,7 @@ from model import Base
 
 class ICUStay(Base):
     __tablename__ = 'icustays'
-    icustay_id = Column(Integer, primary_key=True)
+    icustay_id = Column(Integer, Sequence('icustays_icustay_id_seq'), primary_key=True, autoincrement=True)
     subject_id = Column(Integer, ForeignKey('patients.subject_id'))
     hadm_id = Column(Integer, ForeignKey('admissions.hadm_id'))
     dbsource = Column(String(20))

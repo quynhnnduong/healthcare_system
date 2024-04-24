@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, String
+from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, String, Sequence, func
 from sqlalchemy.orm import relationship
 
 from model import Base
@@ -6,9 +6,9 @@ from model import Base
 
 class Admission(Base):
     __tablename__ = 'admissions'
-    row_id = Column(Integer, primary_key=True)
+    row_id = Column(Integer, primary_key=True, autoincrement=True)
     subject_id = Column(Integer, ForeignKey('patients.subject_id'))
-    hadm_id = Column(Integer, unique=True, nullable=False)
+    hadm_id = Column(Integer, Sequence('admissions_hadm_id_seq'), unique=True, nullable=False)
     admittime = Column(TIMESTAMP)
     dischtime = Column(TIMESTAMP)
     deathtime = Column(TIMESTAMP)

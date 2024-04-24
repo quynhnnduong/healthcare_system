@@ -20,7 +20,8 @@ aes_cipher = AESCipher(key)
 
 class Patient(Base):
     __tablename__ = 'patients'
-    subject_id = Column(Integer, primary_key=True)
+    row_id = Column(Integer, primary_key=True, autoincrement=True)
+    subject_id = Column(Integer, unique=True, nullable=False)
     gender = Column(String(5))
     _dob = Column("dob", String)
     _dod = Column("dod", String)
