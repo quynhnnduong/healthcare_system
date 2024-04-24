@@ -67,6 +67,20 @@ CREATE TABLE users (
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
+CREATE TABLE permissions (
+    permission_id SERIAL PRIMARY KEY,
+    permission_name VARCHAR(255) UNIQUE NOT NULL
+    description TEXT
+);
+
+CREATE TABLE role_permissions (
+    role_id INT,
+    permission_id INT,
+    PRIMARY KEY (role_id, permission_id),
+    FOREIGN KEY (role_id) REFERENCES roles(role_id),
+    FOREIGN KEY (permission_id) REFERENCES permissions(permission_id)
+);
+
 -- roles
 INSERT INTO roles (role_id, role_name, description) VALUES
 (1, 'Administrator', 'Can access and manage all records.'),
@@ -75,4 +89,15 @@ INSERT INTO roles (role_id, role_name, description) VALUES
 (4, 'Patient', 'Can access patient information.');
 
 
+-- permissions
+INSERT INTO permissions (permission_id, permission_name, description) VALUES
+(1, 'view_patient', 'View patient details.'),
+(2, 'edit_patient', 'Edit patient details.'),
+(3, 'view_all_patients', 'View all patient records.'),
 
+-- Link roles to permissions
+INSERT INTO role_permissions (role_id, permission_id) VALUES
+(1, 3),         -- Administrator
+(2, 1), (2, 2), -- Doctor
+(3, 1),         -- Nurse
+(4, 1);         -- Patient
