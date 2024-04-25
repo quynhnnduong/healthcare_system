@@ -1,5 +1,7 @@
 # Healthcare Database System
 
+#### By: Quynh Duong, Minh Le, Saumya Shukla​
+
 ## Overview 
 
 This project is designed to create a secure database system for managing patient data within the healthcare domain. It integrates advanced encryption standards (AES) and a role-based access control framework to ensure data security and confidentiality.
